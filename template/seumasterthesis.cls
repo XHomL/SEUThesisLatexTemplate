@@ -133,10 +133,20 @@
 \RequirePackage{algorithmicx}
 \RequirePackage{algpseudocode}
 \numberwithin{algorithm}{chapter}
+\renewcommand{\thealgorithm}{\thechapter{}-\arabic{algorithm}} % 修改5 -- 统一图、表、算法序号标记
 \renewcommand{\algorithmicrequire}{\textbf{输入:}}
 \renewcommand{\algorithmicensure}{\textbf{输出:}}
 \floatname{algorithm}{算法}
 \renewcommand{\listalgorithmname}{算法目录}
+% 修改6 -- 优化图、表、算法目录
+\let\oldlistofalgorithms\listofalgorithms
+\let\oldnumberline\numberline% Store \numberline
+\newcommand{\algnumberline}[1]{算法~#1}
+\renewcommand{\listofalgorithms}{%
+  \let\numberline\algnumberline% Update \numberline
+  \oldlistofalgorithms
+  \let\numberline\oldnumberline% Restore \numberline
+}
 
 %% ----------------------------------------------------------------------------
 %%                        Reference and Citation
@@ -176,8 +186,8 @@
 %%                          Table & Figure Settings
 %% ----------------------------------------------------------------------------
 
-\renewcommand{\thetable}{\thechapter{}.\arabic{table}}
-\renewcommand{\thefigure}{\thechapter{}-\arabic{figure}}
+\renewcommand{\thetable}{\thechapter{}-\arabic{table}} % 修改5 -- 统一图、表、算法序号标记
+\renewcommand{\thefigure}{\thechapter{}-\arabic{figure}} 
 \captionsetup[table]{labelsep=space}
 \captionsetup[figure]{labelsep=space}
 \RequirePackage{graphicx}
@@ -934,6 +944,16 @@
 %% ----------------------------------------------------------------------------
 %%                            Summary list
 %% ----------------------------------------------------------------------------
+
+% 修改6 -- 优化图、表、算法目录
+\renewcommand{\cftfigpresnum}{图\ }
+\renewcommand{\cfttabpresnum}{表\ }
+\newlength{\mylenf}
+\settowidth{\mylenf}{\cftfigpresnum}
+\setlength{\cftfignumwidth}{\dimexpr\mylenf+2.5em}
+\newlength{\mylent}
+\settowidth{\mylent}{\cfttabpresnum}
+\setlength{\cfttabnumwidth}{\dimexpr\mylent+2.5em}
 
 \newcommand\listofothers {
 
